@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,11 @@ public class ProductController {
 
     @PostMapping({"/add-product" })
     public String addProduct(@Valid @ModelAttribute("product") ProductModel model , HttpServletRequest request){
-        productService.saveProduct(model);
+        try {
+            productService.saveProduct(model);
+        } catch (IOException e) {
+            throw new RuntimeException("File Upload Fail!");
+        }
         return "redirect:index";
     }
 

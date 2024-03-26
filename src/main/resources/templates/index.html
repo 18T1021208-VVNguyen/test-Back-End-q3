@@ -84,8 +84,8 @@
                 <td th:utext="${product.getPrice()}" >Giá</td>
                 <td th:utext="${product.getDescription()}" >Mô Tả</td>
                 <td th:utext="${product.getQuantity()}" >Số Lượng</td>
-                <td>  <img th:src="${product.getImgUrl()}" class="rounded" alt="Cinque Terre" width="304" height="236"> </td>
-                <td> <a class="btn btn-danger" th:href="@{/delete-product(id=${product.getId()})}|"> Delete</a> </td>
+                <td>  <img th:src="*{'data:' + product.getTypeFile() + ';base64,'+ product.getDataFileBase64()}" class="rounded" alt="Cinque Terre" width="304" height="236"> </td>
+                <td> <a class="btn btn-danger" th:href="@{/delete-product(id=${product.getId()})}"> Delete</a> </td>
             </tr>
 
             </tbody>

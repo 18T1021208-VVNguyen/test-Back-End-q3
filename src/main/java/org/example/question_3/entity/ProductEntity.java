@@ -28,8 +28,15 @@ public class ProductEntity extends  BaseEntity{
     @Column(name = "description")
     private String description;
 
-    @Column(name ="imgUrl")
-    private String imgUrl;
+    @Column(name ="data_file")
+    @Lob
+    private byte[] dataFile;
+
+    @Column(name = "type_file")
+    private String typeFile;
+
+    @Column(name = "name_file")
+    private String nameFile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class ProductModel {
 
-
+    @NotNull
     private MultipartFile file;
 
     @NotBlank
@@ -29,7 +29,9 @@ public class ProductModel {
     @NotBlank
     private String description;
 
-    private String imgUrl;
+    private String dataFileBase64;
+
+    private String typeFile;
 
     private Long id;
 

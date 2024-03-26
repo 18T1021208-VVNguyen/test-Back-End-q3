@@ -3,16 +3,17 @@ package org.example.question_3.service.impl;
 import jakarta.transaction.Transactional;
 import org.example.question_3.entity.CategoryEntity;
 import org.example.question_3.entity.ProductEntity;
-import org.example.question_3.model.CategoryModel;
 import org.example.question_3.model.FilterModel;
 import org.example.question_3.model.ProductModel;
 import org.example.question_3.repository.CategoryRepository;
 import org.example.question_3.repository.ProductRepository;
-import org.example.question_3.service.FilesStorageService;
 import org.example.question_3.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import java.io.IOException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl  implements ProductService {
-
-    @Autowired
-    private FilesStorageService filesStorageService;
 
     @Autowired
     private ProductRepository productRepository;
@@ -34,12 +32,17 @@ public class ProductServiceImpl  implements ProductService {
     private ModelMapper mapper;
 
     @Override
-    public void saveProduct(ProductModel productModel) {
-        filesStorageService.init();
+    public void saveProduct(ProductModel productModel) throws IOException {
         ProductEntity productEntity =  mapper.map(productModel, ProductEntity.class);
         Optional<CategoryEntity> categoryEntity= categoryRepository.findById(productModel.getIdCategory());
-        productEntity.setImgUrl( filesStorageService.saveFile(productModel.getFile()));
         productEntity.setCategoryEntity(categoryEntity.get());
+
+        String fileName = StringUtils.cleanPath(productModel.getFile().getOriginalFilename());
+        String type = productModel.getFile().getContentType();
+        byte[] data = Base64.encodeBase64( productModel.getFile().getBytes() ) ;
+        productEntity.setNameFile(fileName);
+        productEntity.setDataFile(data);
+        productEntity.setTypeFile(type);
         productRepository.save(productEntity);
     }
 
@@ -53,7 +56,8 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .imgUrl(item.getImgUrl())
+                        .dataFileBase64(Base64.encodeToString( item.getDataFile()))
+                        .typeFile(item.getTypeFile())
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
         ).collect(Collectors.toList());
@@ -87,7 +91,8 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .imgUrl(item.getImgUrl())
+                            .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                            .typeFile(item.getTypeFile())
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
             ).collect(Collectors.toList());
@@ -100,7 +105,8 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .imgUrl(item.getImgUrl())
+                            .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                            .typeFile(item.getTypeFile())
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
             ).collect(Collectors.toList());
@@ -117,7 +123,8 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .imgUrl(item.getImgUrl())
+                        .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                        .typeFile(item.getTypeFile())
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
         ).collect(Collectors.toList());
