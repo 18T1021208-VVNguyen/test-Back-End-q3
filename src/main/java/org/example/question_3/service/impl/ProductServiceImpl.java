@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +39,7 @@ public class ProductServiceImpl  implements ProductService {
 
         String fileName = StringUtils.cleanPath(productModel.getFile().getOriginalFilename());
         String type = productModel.getFile().getContentType();
-        byte[] data = Base64.encodeBase64( productModel.getFile().getBytes() ) ;
+        byte[] data = Base64.encodeBase64(productModel.getFile().getBytes() , true)  ;
         productEntity.setNameFile(fileName);
         productEntity.setDataFile(data);
         productEntity.setTypeFile(type);
@@ -56,7 +56,7 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .dataFileBase64(Base64.encodeToString( item.getDataFile()))
+                        .dataFileBase64(new String( item.getDataFile()))
                         .typeFile(item.getTypeFile())
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
@@ -91,7 +91,7 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                            .dataFileBase64(new String( item.getDataFile()))
                             .typeFile(item.getTypeFile())
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
@@ -105,7 +105,7 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                            .dataFileBase64(new String( item.getDataFile()))
                             .typeFile(item.getTypeFile())
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
@@ -123,7 +123,7 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .dataFileBase64(Base64.getEncoder().encodeToString( item.getDataFile()))
+                        .dataFileBase64(new String( item.getDataFile()))
                         .typeFile(item.getTypeFile())
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
