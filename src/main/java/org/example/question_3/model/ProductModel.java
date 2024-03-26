@@ -31,8 +31,6 @@ public class ProductModel {
 
     private String dataFileBase64;
 
-    private String typeFile;
-
     private Long id;
 
     @NotNull

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bootstrap Example</title>
+    <title>NguyênBlog</title>
     <meta charset="utf-8">
+    <link style="height:445px; width: 345px" rel="icon" type="image/x-icon"
+          href="https://i.pinimg.com/originals/e3/81/10/e38110ff59d6de08a497b2fd4bb1e2ac.jpg" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>-->
@@ -84,7 +86,7 @@
                 <td th:utext="${product.getPrice()}" >Giá</td>
                 <td th:utext="${product.getDescription()}" >Mô Tả</td>
                 <td th:utext="${product.getQuantity()}" >Số Lượng</td>
-                <td>  <img th:src="*{'data:' + product.getTypeFile() + ';base64,'+ product.getDataFileBase64()}" class="rounded" alt="Cinque Terre" width="304" height="236"> </td>
+                <td>  <img th:src="*{product.getDataFileBase64()}" class="rounded" alt="Cinque Terre" width="304" height="236"> </td>
                 <td> <a class="btn btn-danger" th:href="@{/delete-product(id=${product.getId()})}"> Delete</a> </td>
             </tr>
 
@@ -108,7 +110,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form action="/add-product" method="post" th:object="${product}"
+                <form th:action="@{/add-product}" method="post" th:object="${product}"
                       enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Tên Sản Phẩm:</label>

@@ -9,8 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "products",uniqueConstraints = {
-        @UniqueConstraint(name = "UNIQUE_PRODUCT_NAME", columnNames = "name") })
+@Table(name = "products")
 public class ProductEntity extends  BaseEntity{
 
     @Column(name = "name" )
@@ -28,7 +27,7 @@ public class ProductEntity extends  BaseEntity{
     @Column(name = "description")
     private String description;
 
-    @Column(name ="data_file")
+    @Column(name ="data_file" , columnDefinition="MEDIUMBLOB")
     @Lob
     private byte[] dataFile;
 

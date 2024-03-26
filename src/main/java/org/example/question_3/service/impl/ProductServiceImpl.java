@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +40,8 @@ public class ProductServiceImpl  implements ProductService {
 
         String fileName = StringUtils.cleanPath(productModel.getFile().getOriginalFilename());
         String type = productModel.getFile().getContentType();
-        byte[] data = Base64.encodeBase64(productModel.getFile().getBytes() , true)  ;
+        byte[] data = Base64.encodeBase64(productModel.getFile().getBytes() , false)  ;
+        String text = new String(data);
         productEntity.setNameFile(fileName);
         productEntity.setDataFile(data);
         productEntity.setTypeFile(type);
@@ -56,8 +58,7 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .dataFileBase64(new String( item.getDataFile()))
-                        .typeFile(item.getTypeFile())
+                        .dataFileBase64(this.convertByteToBase64(item.getTypeFile(),item.getDataFile()))
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
         ).collect(Collectors.toList());
@@ -91,8 +92,7 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .dataFileBase64(new String( item.getDataFile()))
-                            .typeFile(item.getTypeFile())
+                            .dataFileBase64(this.convertByteToBase64(item.getTypeFile(),item.getDataFile()))
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
             ).collect(Collectors.toList());
@@ -105,8 +105,7 @@ public class ProductServiceImpl  implements ProductService {
                             .price(item.getPrice())
                             .quantity(item.getQuantity())
                             .description(item.getDescription())
-                            .dataFileBase64(new String( item.getDataFile()))
-                            .typeFile(item.getTypeFile())
+                            .dataFileBase64(this.convertByteToBase64(item.getTypeFile(),item.getDataFile()))
                             .nameCategory(item.getCategoryEntity().getName())
                             .build()
             ).collect(Collectors.toList());
@@ -123,11 +122,16 @@ public class ProductServiceImpl  implements ProductService {
                         .price(item.getPrice())
                         .quantity(item.getQuantity())
                         .description(item.getDescription())
-                        .dataFileBase64(new String( item.getDataFile()))
-                        .typeFile(item.getTypeFile())
+                        .dataFileBase64(this.convertByteToBase64(item.getTypeFile(),item.getDataFile()))
                         .nameCategory(item.getCategoryEntity().getName())
                         .build()
         ).collect(Collectors.toList());
+    }
+
+    private String convertByteToBase64(String fileType,  byte[] data ){
+        StringBuilder result = new StringBuilder("data:").append(fileType).append(";base64,").append(new String(data));
+//       String result = "data:" + fileType + ";base64," + new String(data);
+        return  result.toString();
     }
 
 
